@@ -3,15 +3,15 @@ package blockChain;
 import java.util.Date;
 
 public class Block {
-    private static int difficulty;
+    private static int difficulty = 5;
     private long timeStamp;
-    private Transaction transaction;
+    private String data;
     private String hash;
     private String previousHash;
     private int nonce;
 
-    public Block(Transaction transaction, String previousHash) {
-        this.transaction = transaction;
+    public Block(String data, String previousHash) {
+        this.data = data;
         this.previousHash = previousHash;
         this.timeStamp = new Date().getTime();
         this.nonce = 0;
@@ -20,21 +20,13 @@ public class Block {
 
     }
 
-    public static void setDifficulty(int x) {
-        difficulty = x;
-    }
-
     public String getHash() {
         return hash;
     }
 
-    public String getPreviousHash() {
-        return previousHash;
-    }
-
     private String calculateHash() {
         String tempHash = StringUtil.applySha256(
-                previousHash + Long.toString(timeStamp) + Integer.toString(nonce) + transaction);
+                previousHash + Long.toString(timeStamp) + Integer.toString(nonce) + data);
         return tempHash;
     }
 

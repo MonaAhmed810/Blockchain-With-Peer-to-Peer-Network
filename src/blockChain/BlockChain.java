@@ -3,36 +3,43 @@ package blockChain;
 import java.util.Vector;
 
 public class BlockChain {
-    private Vector<Block> blockChain;
+    private static BlockChain blockChain;
+    private Vector<Block> blocks;
 
-    public BlockChain() {
-        blockChain = new Vector<>();
+    private BlockChain() {
+        blocks = new Vector<>();
     }
 
-    private void createGenesisBlock(Transaction transaction) {
-        Block genesisBlock = new Block(transaction, "0");
-        blockChain.add(genesisBlock);
+    public static BlockChain getInstance() {
+        if (blockChain == null)
+            blockChain = new BlockChain();
+        return blockChain;
+    }
+
+    private void createGenesisBlock(String data) {
+        Block genesisBlock = new Block(data, "0");
+        blocks.add(genesisBlock);
     }
 
     // BlockChain Mining
     // The process of adding a block to the chain
-    public void addBlock(Transaction transaction) {
-        if (blockChain.isEmpty())
-            createGenesisBlock(transaction);
+    public void addBlock(String data) {
+        if (blocks.isEmpty())
+            createGenesisBlock(data);
         else {
-            Block lastBlock = blockChain.lastElement();
-            Block newBlock = new Block(transaction, lastBlock.getHash());
-            blockChain.add(newBlock);
+            Block lastBlock = blocks.lastElement();
+            Block newBlock = new Block(data, lastBlock.getHash());
+            blocks.add(newBlock);
         }
     }
 
     public Boolean isChainValid() {
-        if (!blockChain.isEmpty()) {
-            Block previousBlock = blockChain.get(0);
-            for (int i = 1; i < blockChain.size(); i++) {
-                if (!blockChain.get(i).isBlockValid(previousBlock))
+        if (!blocks.isEmpty()) {
+            Block previousBlock = blocks.get(0);
+            for (int i = 1; i < blocks.size(); i++) {
+                if (!blocks.get(i).isBlockValid(previousBlock))
                     return false;
-                previousBlock = blockChain.get(i);
+                previousBlock = blocks.get(i);
             }
         }
         return true;

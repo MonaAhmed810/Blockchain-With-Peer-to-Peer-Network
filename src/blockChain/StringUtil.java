@@ -1,7 +1,6 @@
 package blockChain;
 
 import java.security.MessageDigest;
-import com.google.gson.GsonBuilder;
 
 public class StringUtil {
 
@@ -19,10 +18,6 @@ public class StringUtil {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-    }
-
-    public static String getJson(Object o) {
-        return new GsonBuilder().setPrettyPrinting().create().toJson(o);
     }
 
     public static String getDifficultyString(int difficulty) {
