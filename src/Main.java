@@ -5,19 +5,18 @@ public class Main {
 
     public static void main(String[] args) {
         // Test the blockChain
-        Block.setDifficulty(1);
-        BlockChain blockChain = new BlockChain();
+        BlockChain blockChain = BlockChain.getInstance();
 
-        Transaction transaction1 = new Transaction("Mona", "Yosra", 10);
-        Transaction transaction2 = new Transaction("Yosra", "Nour", 15);
-        Transaction transaction3 = new Transaction("Nour", "Mona", 5);
+        String news1 = "Mona travels to Alex";
+        String news2 = "Yosra travels to Aswan";
+        String news3 = "Nour travels to Aswan";
 
         System.out.println("Trying to Mine block 1... ");
-        blockChain.addBlock(transaction1);
+        blockChain.addBlock(news1);
         System.out.println("Trying to Mine block 2... ");
-        blockChain.addBlock(transaction2);
+        blockChain.addBlock(news2);
         System.out.println("Trying to Mine block 3... ");
-        blockChain.addBlock(transaction3);
+        blockChain.addBlock(news3);
 
         System.out.println("\nBlockChain is Valid: " + blockChain.isChainValid());
 
