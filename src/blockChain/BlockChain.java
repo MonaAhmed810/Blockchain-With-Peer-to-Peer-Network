@@ -1,5 +1,6 @@
 package blockChain;
 
+
 import java.util.Vector;
 
 public class BlockChain {
@@ -24,9 +25,12 @@ public class BlockChain {
     // BlockChain Mining
     // The process of adding a block to the chain
     public void addBlock(String data) {
-        if (blocks.isEmpty())
+        if (blocks.isEmpty()) {
             createGenesisBlock(data);
-        else {
+            System.out.println("here1");
+        } else {
+            System.out.println("here2");
+
             Block lastBlock = blocks.lastElement();
             Block newBlock = new Block(data, lastBlock.getHash());
             blocks.add(newBlock);
@@ -43,5 +47,16 @@ public class BlockChain {
             }
         }
         return true;
+    }
+
+    public void addReceivedBlock(Block block) {
+        blocks.add(block);
+    }
+
+    public Block getLastBlock() {
+        return blocks.get(blocks.size() - 1);
+    }
+    public Integer getSize(){
+        return blocks.size();
     }
 }

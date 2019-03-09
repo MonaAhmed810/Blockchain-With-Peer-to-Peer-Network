@@ -9,7 +9,7 @@ public class Block {
     private String hash;
     private String previousHash;
     private int nonce;
-
+    public Block(){}
     public Block(String data, String previousHash) {
         this.data = data;
         this.previousHash = previousHash;
@@ -18,6 +18,50 @@ public class Block {
         this.hash = calculateValidHash();
         System.out.println("Block Mined!!! : " + hash);
 
+    }
+
+    public static void setDifficulty(int difficulty) {
+        Block.difficulty = difficulty;
+    }
+
+    public void setTimeStamp(long timeStamp) {
+        this.timeStamp = timeStamp;
+    }
+
+    public static int getDifficulty() {
+        return difficulty;
+    }
+
+    public long getTimeStamp() {
+        return timeStamp;
+    }
+
+    public String getData() {
+        return data;
+    }
+
+    public String getPreviousHash() {
+        return previousHash;
+    }
+
+    public int getNonce() {
+        return nonce;
+    }
+
+    public void setData(String data) {
+        this.data = data;
+    }
+
+    public void setHash(String hash) {
+        this.hash = hash;
+    }
+
+    public void setPreviousHash(String previousHash) {
+        this.previousHash = previousHash;
+    }
+
+    public void setNonce(int nonce) {
+        this.nonce = nonce;
     }
 
     public String getHash() {
