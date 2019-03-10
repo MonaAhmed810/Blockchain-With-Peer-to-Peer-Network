@@ -14,12 +14,10 @@ public class Client extends Thread {
     public static int PORT = 8888;
 
     Client() throws IOException {
-        socket = new MulticastSocket(8888);
+      socket = new MulticastSocket(8888);
       address = InetAddress.getByName("224.0.0.1");
       socket.joinGroup(address);
       socket.setReuseAddress(true);
-
-
     }
 
     @Override
@@ -38,9 +36,10 @@ public class Client extends Thread {
 
                 String received = new String(packet.getData(), 0, packet.getLength());
                 if (received.equals("Hi")) {
+                    System.out.println("receive discovery message");
                     String hostInfo="NewsGroup|224.0.0.1";
                     byte[] buf2=hostInfo.getBytes();
-                    DatagramPacket hostPacket = new DatagramPacket(buf2, buf2.length, packet.getAddress(), 8888);
+                    DatagramPacket hostPacket = new DatagramPacket(buf2, buf2.length, packet.getAddress(), packet.getPort());
                     DatagramSocket datagramSocket = new DatagramSocket();
                     datagramSocket.send(hostPacket);
                 }
@@ -96,11 +95,11 @@ public class Client extends Thread {
                         }
                     }// end of peerchain
                     else if(splited[0].equals("NewsGroup")){
-                        address = InetAddress.getByName(splited[1]);
-                        socket.joinGroup(address);
-                        socket.setReuseAddress(true);
+//                         System.out.println("join to News Group");
+//                         address = InetAddress.getByName(splited[1]);
+//                         socket.joinGroup(address);
+//                         socket.setReuseAddress(true);
                     }
-
                 }
                 if (received.equals("No more news. Goodbye.")) break;
             } catch (IOException e) {

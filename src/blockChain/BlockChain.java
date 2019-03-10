@@ -1,6 +1,5 @@
 package blockChain;
 
-
 import java.util.Vector;
 
 public class BlockChain {
@@ -49,11 +48,7 @@ public class BlockChain {
         return true;
     }
 
-    public void freeBlocks() {
-    	blocks.clear();
-    } 
-
-    public void addReceivedBlock(Block block) {
+   public void addReceivedBlock(Block block) {
         blocks.add(block);
     }
 
@@ -62,6 +57,10 @@ public class BlockChain {
     }
     public Integer getSize(){
         return blocks.size();
+    }
+
+    public void freeBlocks(){
+        blocks.clear();
     }
 
 }
