@@ -14,11 +14,10 @@ public class Client extends Thread {
     public static int PORT = 8888;
 
     Client() throws IOException {
-        socket = new MulticastSocket(8888);
-//        address = InetAddress.getByName("224.0.0.1");
-//        socket.joinGroup(address);
-//        socket.setReuseAddress(true);
-
+      socket = new MulticastSocket(8888);
+      address = InetAddress.getByName("224.0.0.1");
+      socket.joinGroup(address);
+      socket.setReuseAddress(true);
     }
 
     @Override
@@ -96,10 +95,10 @@ public class Client extends Thread {
                         }
                     }// end of peerchain
                     else if(splited[0].equals("NewsGroup")){
-                        System.out.println("join to News Group");
-                        address = InetAddress.getByName(splited[1]);
-                        socket.joinGroup(address);
-                        socket.setReuseAddress(true);
+//                         System.out.println("join to News Group");
+//                         address = InetAddress.getByName(splited[1]);
+//                         socket.joinGroup(address);
+//                         socket.setReuseAddress(true);
                     }
                 }
                 if (received.equals("No more news. Goodbye.")) break;

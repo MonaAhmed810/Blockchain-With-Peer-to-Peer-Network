@@ -6,16 +6,14 @@ import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 
+
 public class Server {
     public String INET_ADDR = "224.0.0.1";
     public int PORT = 8888;
-
-
+  
     public void run(String msg) throws UnknownHostException {
-
-        // Get the address that we are going to connect to.
+    	System.out.print(msg);
         InetAddress addr = InetAddress.getByName(INET_ADDR);
-
 
         // Open a new DatagramSocket, which will be used to send the data.
         try (DatagramSocket serverSocket = new DatagramSocket()) {
@@ -31,14 +29,11 @@ public class Server {
 
         } catch (IOException ex) {
             ex.printStackTrace();
-        }
-
-
+        } 
+    	
     }//end fun run
-
+     
     public void preparemessage(Block block) throws UnknownHostException {
-        System.out.println("here4");
-
         String bLock = "Block|";
         bLock += block.getTimeStamp();
         bLock += "|";
@@ -55,7 +50,6 @@ public class Server {
     }
 
     public void discovery() throws IOException {
-        System.out.println("here2");
         DatagramSocket socket = null;
         socket = new DatagramSocket();
         socket.setBroadcast(true);
@@ -68,9 +62,8 @@ public class Server {
     }
 
     public void requestBlockChain() throws UnknownHostException {
-        //System.out.println("in requestBlockChain");
         String requestChain = "Chain";
         run(requestChain);
     }
-
 }
+

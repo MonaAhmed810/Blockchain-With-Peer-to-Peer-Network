@@ -1,7 +1,7 @@
+
 import blockChain.BlockChain;
 import blockChain.Peer;
 import com.google.gson.GsonBuilder;
-
 import java.io.IOException;
 import java.net.UnknownHostException;
 import java.util.Scanner;
