@@ -19,6 +19,7 @@ public class Client extends Thread {
       socket.joinGroup(address);
       socket.setReuseAddress(true);
 
+
     }
 
     @Override
@@ -99,6 +100,7 @@ public class Client extends Thread {
                         socket.joinGroup(address);
                         socket.setReuseAddress(true);
                     }
+
                 }
                 if (received.equals("No more news. Goodbye.")) break;
             } catch (IOException e) {
@@ -114,3 +116,4 @@ public class Client extends Thread {
         socket.close();
     }
 }
+

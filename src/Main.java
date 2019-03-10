@@ -1,6 +1,10 @@
 import com.google.gson.GsonBuilder;
+
 import blockChain.BlockChain;
 import blockChain.Peer;
+
+import java.io.IOException;
+
 import java.util.Scanner;
 import java.net.UnknownHostException;
 public class Main {
@@ -8,20 +12,6 @@ public class Main {
     public static void main(String[] args) throws UnknownHostException{
         // Test the blockChain
         BlockChain blockChain = BlockChain.getInstance();
-
-        String news1 = "Mona travels to Alex";
-        String news2 = "Yosra travels to Aswan";
-        String news3 = "Nour travels to Aswan";
-
-        System.out.println("Trying to Mine block 1... ");
-        blockChain.addBlock(news1);
-       /* 
-        System.out.println("Trying to Mine block 2... ");
-        blockChain.addBlock(news2);
-        System.out.println("Trying to Mine block 3... ");
-        blockChain.addBlock(news3);
-*/
-        //System.out.println("\nBlockChain is Valid: " + blockChain.isChainValid());
 
         Peer peer = new Peer();
         Scanner in = new Scanner(System.in);
@@ -51,13 +41,13 @@ public class Main {
                 }
                 case 4: {
                     peer.terminate();
-                    
                     in.close();
                     break;
                 }
             }
         }
         System.out.println("\nThe Block Chain: ");
+        System.out.println("size: "+blockChain.getSize());
         String blockChainJSON = new GsonBuilder().setPrettyPrinting().create().toJson(blockChain);
         System.out.println(blockChainJSON);
         blockChain.freeBlocks();

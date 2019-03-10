@@ -1,4 +1,5 @@
 package blockChain;
+
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
@@ -15,15 +16,14 @@ public class Peer {
             e.printStackTrace();
         }
         client .start();
-      //  server.prepareMassage("Hi");
     }
 
-    public void discover() {
-     //   server.prepareMassage("Hi");
+    public void peerdiscover()throws IOException {
+        System.out.println("here1");
+          server.discovery();
     }
 
     public void terminate() {
-       // server.interrupt();
         client.interrupt();
     }
 
@@ -31,12 +31,15 @@ public class Peer {
         return InetAddress.getByName("localhost").toString();
     }
 
-     public void Block_to_server() throws UnknownHostException {
-    	 BlockChain BC=BlockChain.getInstance();
-    	 server.preparemessage(BC.getLastBlock());
+    public void Block_to_server() throws UnknownHostException {
+        System.out.println("here3");
 
-     }
-    public void updateBlockChain() throws UnknownHostException {
-       server.requestBlockChain();
+        BlockChain BC=BlockChain.getInstance();
+        server.preparemessage(BC.getLastBlock());
+
+    }
+    public void updateBlockChain() throws UnknownHostException{
+        server.requestBlockChain();
+
     }
 }

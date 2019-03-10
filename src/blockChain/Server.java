@@ -1,4 +1,5 @@
 package blockChain;
+
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
@@ -6,6 +7,7 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 
 public class Server   {
+
 	public String INET_ADDR = "224.0.0.1";
     public int PORT = 8888;
  
@@ -50,3 +52,4 @@ public class Server   {
 	}
  
 }
+
