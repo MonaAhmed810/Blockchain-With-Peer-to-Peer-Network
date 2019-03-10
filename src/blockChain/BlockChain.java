@@ -5,7 +5,7 @@ import java.util.Vector;
 
 public class BlockChain {
     private static BlockChain blockChain;
-    private Vector<Block> blocks;
+    public Vector<Block> blocks;
 
     private BlockChain() {
         blocks = new Vector<>();
@@ -49,6 +49,10 @@ public class BlockChain {
         return true;
     }
 
+    public void freeBlocks() {
+    	blocks.clear();
+    } 
+
     public void addReceivedBlock(Block block) {
         blocks.add(block);
     }
@@ -59,4 +63,5 @@ public class BlockChain {
     public Integer getSize(){
         return blocks.size();
     }
+
 }

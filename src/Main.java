@@ -1,6 +1,10 @@
-import blockChain.*;
 import com.google.gson.GsonBuilder;
+
+import blockChain.BlockChain;
+import blockChain.Peer;
+
 import java.io.IOException;
+
 import java.util.Scanner;
 import java.net.UnknownHostException;
 public class Main {
@@ -32,7 +36,7 @@ public class Main {
                     break;
                 }
                 case 3: {
-                    //user.showIPs();
+                    peer.updateBlockChain();
                     break;
                 }
                 case 4: {
@@ -46,5 +50,6 @@ public class Main {
         System.out.println("size: "+blockChain.getSize());
         String blockChainJSON = new GsonBuilder().setPrettyPrinting().create().toJson(blockChain);
         System.out.println(blockChainJSON);
+        blockChain.freeBlocks();
     }
 }
