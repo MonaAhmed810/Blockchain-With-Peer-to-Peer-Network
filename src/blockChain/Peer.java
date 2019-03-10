@@ -16,11 +16,11 @@ public class Peer {
             e.printStackTrace();
         }
         client .start();
-        //  server.prepareMassage("Hi");
     }
 
-    public void discover() {
-        //   server.prepareMassage("Hi");
+    public void peerdiscover()throws IOException {
+        System.out.println("here1");
+          server.discovery();
     }
 
     public void terminate() {
@@ -38,8 +38,8 @@ public class Peer {
         server.preparemessage(BC.getLastBlock());
 
     }
-    public void updateBlockChain() {
-        //TODO: make the peer get you the longest chain
-        
+    public void updateBlockChain() throws UnknownHostException{
+        server.requestBlockChain();
+
     }
 }

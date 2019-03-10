@@ -6,7 +6,7 @@ import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 
-public class Server   {
+public class Server {
     public String INET_ADDR = "224.0.0.1";
     public int PORT = 8888;
 
@@ -15,7 +15,6 @@ public class Server   {
 
         // Get the address that we are going to connect to.
         InetAddress addr = InetAddress.getByName(INET_ADDR);
-        System.out.println("here1");
 
 
         // Open a new DatagramSocket, which will be used to send the data.
@@ -26,7 +25,7 @@ public class Server   {
             DatagramPacket msgPacket = new DatagramPacket(msg.getBytes(),
                     msg.getBytes().length, addr, PORT);
             serverSocket.send(msgPacket);
-
+            //System.out.println("in run");
             System.out.println("Server sent packet with msg: " + msg);
 
 
@@ -40,19 +39,38 @@ public class Server   {
     public void preparemessage(Block block) throws UnknownHostException {
         System.out.println("here4");
 
-        String bLock ="Block|";
-        bLock+=block.getTimeStamp();
-        bLock+="|";
-        bLock+=block.getData();
-        bLock+="|";
-        bLock+=block.getHash();
-        bLock+="|";
-        bLock+=block.getPreviousHash();
-        bLock+="|";
-        bLock+=block.getNonce();
-        bLock+="|";
+        String bLock = "Block|";
+        bLock += block.getTimeStamp();
+        bLock += "|";
+        bLock += block.getData();
+        bLock += "|";
+        bLock += block.getHash();
+        bLock += "|";
+        bLock += block.getPreviousHash();
+        bLock += "|";
+        bLock += block.getNonce();
+        bLock += "|";
         run(bLock);
 
+    }
+
+    public void discovery() throws IOException {
+        System.out.println("here2");
+        DatagramSocket socket = null;
+        socket = new DatagramSocket();
+        socket.setBroadcast(true);
+
+        String broadcastMessage = "Hi";
+        byte[] buffer = broadcastMessage.getBytes();
+        InetAddress  broadcastIP = InetAddress.getByName("225.225.225.225");
+        DatagramPacket packet= new DatagramPacket(buffer, buffer.length, broadcastIP, 8888);
+        socket.send(packet);
+    }
+
+    public void requestBlockChain() throws UnknownHostException {
+        //System.out.println("in requestBlockChain");
+        String requestChain = "Chain";
+        run(requestChain);
     }
 
 }
