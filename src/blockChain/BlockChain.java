@@ -4,7 +4,7 @@ import java.util.Vector;
 
 public class BlockChain {
     private static BlockChain blockChain;
-    private Vector<Block> blocks;
+    public Vector<Block> blocks;
 
     private BlockChain() {
         blocks = new Vector<>();
@@ -44,4 +44,14 @@ public class BlockChain {
         }
         return true;
     }
+    public void addReceivedBlock(Block block){
+        blocks.add(block);
+    }
+    public Block getLastBlock() {
+		return blocks.get(blocks.size()-1);
+    }
+    public void freeBlocks() {
+    	blocks.clear();
+    }
+    
 }
