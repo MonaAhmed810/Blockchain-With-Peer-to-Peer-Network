@@ -10,7 +10,6 @@ public class Block {
     private String previousHash;
     private int nonce;
 
-    
     public Block() {}
       public Block(String data, String previousHash) {
         this.data = data;
@@ -21,76 +20,25 @@ public class Block {
         System.out.println("Block Mined!!! : " + hash);
 
     }
-    public static int getDifficulty() {
-		return difficulty;
-	}
-
-	public static void setDifficulty(int difficulty) {
-		Block.difficulty = difficulty;
-	}
-
-	public long getTimeStamp() {
-		return timeStamp;
-	}
-
-	public void setTimeStamp(long timeStamp) {
-		this.timeStamp = timeStamp;
-	}
-
-	public String getData() {
-		return data;
-	}
-
-	public void setData(String data) {
-		this.data = data;
-	}
-
-	public String getPreviousHash() {
-		return previousHash;
-	}
-
-	public void setPreviousHash(String previousHash) {
-		this.previousHash = previousHash;
-	}
-
-	public int getNonce() {
-		return nonce;
-	}
-
-	public void setNonce(int nonce) {
-		this.nonce = nonce;
-	}
-
-	public void setHash(String hash) {
-		this.hash = hash;
-	}
-
-	 public static void setDifficulty(int difficulty) {
-        Block.difficulty = difficulty;
-    }
-
-    public void setTimeStamp(long timeStamp) {
-        this.timeStamp = timeStamp;
-    }
 
     public static int getDifficulty() {
         return difficulty;
+    }
+
+    public static void setDifficulty(int difficulty) {
+        Block.difficulty = difficulty;
     }
 
     public long getTimeStamp() {
         return timeStamp;
     }
 
+    public void setTimeStamp(long timeStamp) {
+        this.timeStamp = timeStamp;
+    }
+
     public String getData() {
         return data;
-    }
-
-    public String getPreviousHash() {
-        return previousHash;
-    }
-
-    public int getNonce() {
-        return nonce;
     }
 
     public void setData(String data) {
@@ -101,8 +49,16 @@ public class Block {
         this.hash = hash;
     }
 
+    public String getPreviousHash() {
+        return previousHash;
+    }
+
     public void setPreviousHash(String previousHash) {
         this.previousHash = previousHash;
+    }
+
+    public int getNonce() {
+        return nonce;
     }
 
     public void setNonce(int nonce) {
@@ -137,11 +93,11 @@ public class Block {
 
     public boolean isBlockValid(Block previousBlock) {
         if (!hash.equals(calculateValidHash())) {
-            System.out.println("Current Hash not valid");
+            System.out.println("Current hash not valid");
             return false;
         }
         if (!previousHash.equals(previousBlock.getHash())) {
-            System.out.println("Previous Hash not Valid");
+            System.out.println("Previous hash not valid");
             return false;
         }
         return true;

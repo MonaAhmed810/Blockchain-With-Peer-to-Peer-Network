@@ -1,5 +1,7 @@
 package blockChain;
 
+import com.google.gson.GsonBuilder;
+
 import java.util.Vector;
 
 public class BlockChain {
@@ -23,20 +25,17 @@ public class BlockChain {
 
     // BlockChain Mining
     // The process of adding a block to the chain
-    public void addBlock(String data) {
-        if (blocks.isEmpty()) {
+    public void createBlock(String data) {
+        if (blocks.isEmpty())
             createGenesisBlock(data);
-            System.out.println("here1");
-        } else {
-            System.out.println("here2");
-
+        else {
             Block lastBlock = blocks.lastElement();
             Block newBlock = new Block(data, lastBlock.getHash());
             blocks.add(newBlock);
         }
     }
 
-    public Boolean isChainValid() {
+    public Boolean isChainValid(Vector<Block> blocks) {
         if (!blocks.isEmpty()) {
             Block previousBlock = blocks.get(0);
             for (int i = 1; i < blocks.size(); i++) {
@@ -48,19 +47,23 @@ public class BlockChain {
         return true;
     }
 
-   public void addReceivedBlock(Block block) {
+    public void addBlock(Block block) {
         blocks.add(block);
     }
 
     public Block getLastBlock() {
-        return blocks.get(blocks.size() - 1);
+        return blocks.lastElement();
     }
-    public Integer getSize(){
+
+    public int getSize() {
         return blocks.size();
     }
 
-    public void freeBlocks(){
-        blocks.clear();
+    public void print(){
+        System.out.println("\nThe Block Chain: ");
+        System.out.println("size: " + blockChain.getSize());
+        String blockChainJSON = new GsonBuilder().setPrettyPrinting().create().toJson(blockChain);
+        System.out.println(blockChainJSON);
     }
 
 }

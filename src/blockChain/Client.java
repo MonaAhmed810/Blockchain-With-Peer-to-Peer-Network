@@ -1,68 +1,63 @@
 package blockChain;
 
 import java.io.IOException;
-import java.net.DatagramPacket;
-import java.net.DatagramSocket;
-import java.net.InetAddress;
-import java.net.MulticastSocket;
+import java.net.*;
 import java.util.Vector;
 
 public class Client extends Thread {
-    BlockChain bc = BlockChain.getInstance();
-    MulticastSocket socket = null;
-    public InetAddress address = InetAddress.getByName("224.0.0.1");
-    public static int PORT = 8888;
+    private boolean groupJoined = false;
+    private static int PORT = 8888;
+    private String groupAddress = "224.0.0.1";
+    BlockChain blockChain = BlockChain.getInstance();
+    MulticastSocket socket;
 
     Client() throws IOException {
-      socket = new MulticastSocket(8888);
-      address = InetAddress.getByName("224.0.0.1");
-      socket.joinGroup(address);
-      socket.setReuseAddress(true);
+        socket = new MulticastSocket(PORT);
+    }
+
+    private void joinGroup() throws IOException {
+        InetAddress address = InetAddress.getByName(groupAddress);
+        if (!groupJoined) {
+            socket.joinGroup(address);
+            socket.setReuseAddress(true);
+            groupJoined = true;
+            System.out.println("join to News Group");
+        }
     }
 
     @Override
     public void run() {
         DatagramPacket packet;
-        while (true) {
-            byte[] buf = new byte[1000];
-            packet = new DatagramPacket(buf, buf.length);
-            try {
-                byte[] buffer = new byte[1024];
+        try {
+            while (true) {
+                byte[] buffer = new byte[1000];
+                packet = new DatagramPacket(buffer, buffer.length);
                 socket.receive(packet);
-                System.out.println("Just received packet from " + packet.getSocketAddress());
-                buffer = packet.getData();
-                System.out.print("message: ");
-                System.out.println(new String(buffer));
-
                 String received = new String(packet.getData(), 0, packet.getLength());
-                if (received.equals("Hi")) {
-                    System.out.println("receive discovery message");
-                    String hostInfo="NewsGroup|224.0.0.1";
-                    byte[] buf2=hostInfo.getBytes();
-                    DatagramPacket hostPacket = new DatagramPacket(buf2, buf2.length, packet.getAddress(), packet.getPort());
+                System.out.println("Just received packet from " + packet.getSocketAddress() + " " + received);
+                if (received.equals("HI")) {
+                    System.out.println("Receive discovery message");
+                    String hostInfo = "NewsGroup|224.0.0.1";
+                    byte[] hostBuffer = hostInfo.getBytes();
+                    DatagramPacket hostPacket = new DatagramPacket(hostBuffer, hostBuffer.length, packet.getAddress(), PORT);
                     DatagramSocket datagramSocket = new DatagramSocket();
                     datagramSocket.send(hostPacket);
-                }
-
-                else if (received.equals("Chain")) {
-                    //put all blocks in one string to send it for the server who request the chain
+                    System.out.println("SEND");
+                } else if (received.equals("Request BlockChain")) {
                     String concatenateAllBlocks = "PeerChain|";
-
-                    for (int i = 0; i < bc.blocks.size(); i++) {
-                        concatenateAllBlocks += bc.blocks.get(i).getTimeStamp() + "-";
-                        concatenateAllBlocks += bc.blocks.get(i).getData() + "-";
-                        concatenateAllBlocks += bc.blocks.get(i).getHash() + "-";
-                        concatenateAllBlocks += bc.blocks.get(i).getPreviousHash() + "-";
-                        concatenateAllBlocks += bc.blocks.get(i).getNonce() + "|";
-                        byte[] ReplyToTheSender = concatenateAllBlocks.getBytes();
-                        DatagramSocket serverSocket = new DatagramSocket();
-                        //InetAddress addr = packet.getAddress();
-                        InetAddress addr = InetAddress.getByName("224.0.0.1");
-                        DatagramPacket msgPacket = new DatagramPacket(ReplyToTheSender, ReplyToTheSender.length, addr, 8888);
-                        serverSocket.send(msgPacket);
+                    for (int i = 0; i < blockChain.blocks.size(); i++) {
+                        concatenateAllBlocks += blockChain.blocks.get(i).getTimeStamp() + "-";
+                        concatenateAllBlocks += blockChain.blocks.get(i).getData() + "-";
+                        concatenateAllBlocks += blockChain.blocks.get(i).getHash() + "-";
+                        concatenateAllBlocks += blockChain.blocks.get(i).getPreviousHash() + "-";
+                        concatenateAllBlocks += blockChain.blocks.get(i).getNonce() + "|";
                     }
-                }
-                else {
+                    byte[] blockChainBuffer = concatenateAllBlocks.getBytes();
+                    DatagramSocket serverSocket = new DatagramSocket();
+                    InetAddress address = InetAddress.getByName(groupAddress);
+                    DatagramPacket msgPacket = new DatagramPacket(blockChainBuffer, blockChainBuffer.length, address, PORT);
+                    serverSocket.send(msgPacket);
+                } else {
                     String[] splited = received.split("\\|");
                     if (splited[0].equals("Block")) {
                         Block block = new Block();
@@ -71,48 +66,37 @@ public class Client extends Thread {
                         block.setHash(splited[3]);
                         block.setPreviousHash(splited[4]);
                         block.setNonce(Integer.parseInt(splited[5]));
-                        BlockChain bc = BlockChain.getInstance();
-                        //if(block.isBlockValid(block))
-                        bc.addReceivedBlock(block);
+                        if (blockChain.getSize() == 0 || block.isBlockValid(blockChain.getLastBlock()))
+                            blockChain.addBlock(block);
 
                     } else if (splited[0].equals("PeerChain")) {
-                        //System.out.println("hello2");
-                        Vector<Block> newblock = new Vector<>();
-                        if (splited.length - 1 > bc.blocks.size()) {
+                        Vector<Block> newblocks = new Vector<>();
+                        if (splited.length - 1 > blockChain.blocks.size()) {
                             for (int i = 1; i < splited.length; i++) {
                                 String[] spllited = splited[i].split("-");//data for each block
-
                                 Block b = new Block();
                                 b.setTimeStamp(Long.parseLong(spllited[0]));
                                 b.setData(spllited[1]);
                                 b.setHash(spllited[2]);
                                 b.setPreviousHash(spllited[3]);
                                 b.setNonce(Integer.parseInt(spllited[4]));
-                                newblock.add(b);
-
+                                newblocks.add(b);
                             }
-                            bc.blocks = newblock;
+                            if (blockChain.isChainValid(newblocks))
+                                blockChain.blocks = newblocks;
                         }
-                    }// end of peerchain
-                    else if(splited[0].equals("NewsGroup")){
-//                         System.out.println("join to News Group");
-//                         address = InetAddress.getByName(splited[1]);
-//                         socket.joinGroup(address);
-//                         socket.setReuseAddress(true);
+                    } else if (splited[0].equals("NewsGroup")) {
+                        groupAddress = splited[1];
+                        joinGroup();
                     }
                 }
                 if (received.equals("No more news. Goodbye.")) break;
-            } catch (IOException e) {
-                e.printStackTrace();
             }
-        }//end of while(true)
-
-        try {
-            socket.leaveGroup(address);
+            socket.leaveGroup(InetAddress.getByName(groupAddress));
+            socket.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
-        socket.close();
     }
 }
 
