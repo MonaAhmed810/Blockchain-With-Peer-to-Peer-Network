@@ -1,5 +1,6 @@
-package blockChain;
+package P2P;
 
+import blockChain.BlockChain;
 import java.io.IOException;
 
 public class Peer {

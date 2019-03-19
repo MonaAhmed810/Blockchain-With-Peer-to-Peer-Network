@@ -1,4 +1,6 @@
-package blockChain;
+package P2P;
+
+import blockChain.Block;
 
 import java.io.IOException;
 import java.net.*;

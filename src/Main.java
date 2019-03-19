@@ -1,7 +1,5 @@
-
 import blockChain.BlockChain;
-import blockChain.Peer;
-
+import P2P.Peer;
 import java.io.IOException;
 import java.util.Scanner;
 
@@ -9,18 +7,6 @@ public class Main {
 
     public static void main(String[] args) throws IOException {
         BlockChain blockChain = BlockChain.getInstance();
-
-//        String news1 = "Mona travels to Alex";
-//        String news2 = "Yosra travels to Aswan";
-//        String news3 = "Nour travels to Aswan";
-//        System.out.println("Trying to Mine block 1... ");
-//        blockChain.createBlock(news1);
-//        System.out.println("Trying to Mine block 2... ");
-//        blockChain.createBlock(news2);
-//        System.out.println("Trying to Mine block 3... ");
-//        blockChain.createBlock(news3);
-//        System.out.println("\nBlockChain is Valid: " + blockChain.isChainValid(blockChain.blocks));
-
         Peer peer = new Peer();
         Scanner in = new Scanner(System.in);
         System.out.println("Please select the operation you want to perform: ");

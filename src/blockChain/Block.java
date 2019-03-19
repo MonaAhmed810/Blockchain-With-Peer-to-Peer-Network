@@ -21,14 +21,6 @@ public class Block {
 
     }
 
-    public static int getDifficulty() {
-        return difficulty;
-    }
-
-    public static void setDifficulty(int difficulty) {
-        Block.difficulty = difficulty;
-    }
-
     public long getTimeStamp() {
         return timeStamp;
     }

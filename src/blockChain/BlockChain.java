@@ -1,7 +1,5 @@
 package blockChain;
 
-import com.google.gson.GsonBuilder;
-
 import java.util.Vector;
 
 public class BlockChain {
@@ -62,7 +60,7 @@ public class BlockChain {
     public void print(){
         System.out.println("\nThe Block Chain: ");
         System.out.println("size: " + blockChain.getSize());
-        String blockChainJSON = new GsonBuilder().setPrettyPrinting().create().toJson(blockChain);
+        String blockChainJSON = StringUtil.getJson(blockChain);
         System.out.println(blockChainJSON);
     }
 
